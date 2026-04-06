@@ -38,10 +38,11 @@ export function Page2() {
               lineHeight: "40px",
             }}
           >
-            Launching 16th of April
+            Launching 23rd of April
           </p>
         </div>
       </div>
     </div>
   );
 }
+
