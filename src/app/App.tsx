@@ -3,7 +3,7 @@ import imgLogo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 import { Page2 } from "./welcomePage";
 
 // const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrqLEjvsHVRYpV1dRoBDBZoDU12NvmpEa5c7LoHskLqaQt0xCKbKljIa3M4pA9fMI62Q/exec";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbZ4cdBzUYadXWSbQRY3eG7hV4HZfb3SkexVZszRlaat-zmLDIefsi__9dub8vLYdA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxS9FxgrWwssXTt3kLzZphi91gnaH92a1iPopJudu3eCX5HfwhgpZRfsVHk4NrsY1Ml/exec";
 export default function App() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
