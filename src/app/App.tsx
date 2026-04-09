@@ -2,7 +2,7 @@ import { useState } from "react";
 import imgLogo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 import { Page2 } from "./welcomePage";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi-QJf6ndr-0Ho4JXe8m247a_ohtBGLCQOufRMAcZow_Z9mPBMIcj8Xo5LTSVHnDC7/exec";
+const GOOGLE_SCRIPT_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AWDtjMWU37ARWtG3ht_vLMhfhTTlwcaw8HUJcBXjrz505kbnn0i9j94oeAerY-02xCzx8J2kviDtN42xmIC8Yo9m63XxC_cP-2tvsa1Ml2vAESZmZ6BJFGze27MDhEiIIre4rx-orIfxlv4ezEwnwKLp3I58C-w1RwxER7O4VtIneKHZDWwnDLW_S2HZDPCE1XLvpk43MkvJVJVVqo4fQjBVPwhcOK_6qBgKPGoctucKC6YvY55AQ_vS9WJN1R1gNUX8MxEQRvhU44fB_QTTq_nWX2a9wepA4Q&lib=Mhj1UYtw0umE9wPCesWoLlbXznVrpGzDU";
 
 export default function App() {
   const [email, setEmail] = useState("");
