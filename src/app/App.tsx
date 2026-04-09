@@ -2,19 +2,39 @@ import { useState } from "react";
 import imgLogo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 import { Page2 } from "./welcomePage";
 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzi-QJf6ndr-0Ho4JXe8m247a_ohtBGLCQOufRMAcZow_Z9mPBMIcj8Xo5LTSVHnDC7/exec";
+
 export default function App() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [skipped, setSkipped] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = () => {
-    if (email.trim()) {
+  const handleSubmit = async () => {
+    if (!email.trim()) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          timestamp: new Date().toISOString(),
+        }),
+      });
       setSubmitted(true);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // --- Logic Check ---
-  // If the user has submitted OR skipped, we show the Welcome Page (Page2)
   if (submitted || skipped) {
     return <Page2 />;
   }
@@ -69,7 +89,8 @@ export default function App() {
             />
             <button
               onClick={handleSubmit}
-              className="shrink-0 cursor-pointer transition-opacity hover:opacity-90 active:opacity-75"
+              disabled={loading}
+              className="shrink-0 cursor-pointer transition-opacity hover:opacity-90 active:opacity-75 disabled:opacity-50"
               style={{
                 backgroundColor: "#92671d",
                 color: "#f5f3eb",
@@ -82,11 +103,16 @@ export default function App() {
                 border: "none",
               }}
             >
-              Submit
+              {loading ? "Saving..." : "Submit"}
             </button>
           </div>
 
-          {/* Skip + Disclaimer */}
+          {error && (
+            <p style={{ color: "#ff6b6b", fontFamily: "'Work Sans', sans-serif", fontSize: "13px" }}>
+              {error}
+            </p>
+          )}
+
           <div
             className="flex flex-col items-center text-center"
             style={{ color: "#8e8871", lineHeight: "29.25px" }}
