@@ -38,7 +38,7 @@ export function Page2() {
               lineHeight: "40px",
             }}
           >
-            Launching 23rd of April
+            Launching 1st of May
           </p>
         </div>
       </div>
