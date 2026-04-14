@@ -1,10 +1,34 @@
+import { useEffect, useState } from "react";
 import imgLogo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
-
+import LandingPage from "./LandingPage";
+ 
 export function Page2() {
+  const [show, setShow] = useState(true);
+  const [fade, setFade] = useState(false);
+ 
+  useEffect(() => {
+    // Start fade out after 2 seconds
+    const fadeTimer = setTimeout(() => setFade(true), 1000);
+    // Swap to LandingPage after fade completes
+    const switchTimer = setTimeout(() => setShow(false), 1300);
+ 
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(switchTimer);
+    };
+  }, []);
+ 
+  // Once done, render LandingPage directly
+  if (!show) return <LandingPage />;
+ 
   return (
     <div
       className="min-h-screen w-full flex flex-col items-center justify-between py-16 px-6"
-      style={{ backgroundColor: "#332c0f" }}
+      style={{
+        backgroundColor: "#332c0f",
+        opacity: fade ? 0 : 1,
+        transition: "opacity 0.6s ease",
+      }}
     >
       {/* Center content */}
       <div className="flex-1 flex flex-col items-center justify-center gap-4 w-full max-w-[595px]">
@@ -16,7 +40,7 @@ export function Page2() {
             className="w-full h-full object-contain"
           />
         </div>
-
+ 
         {/* Text block */}
         <div className="flex flex-col items-center gap-4 w-full">
           <p
@@ -43,10 +67,9 @@ export function Page2() {
           </p>
         </div>
       </div>
-
+ 
       {/* Social links */}
       <div className="flex items-center gap-8">
-        {/* Instagram */}
         <a
           href="https://www.instagram.com/saperepublication/"
           target="_blank"
@@ -98,3 +121,4 @@ export function Page2() {
     </div>
   );
 }
+ 
