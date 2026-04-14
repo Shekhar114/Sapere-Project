@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import landing1 from "../assets/landing1.png";
 // ── Types ──────────────────────────────────────────────────────────────────
 interface Article {
   id: number;
@@ -17,7 +17,7 @@ const articles: Article[] = [
     author: "Sebastián Mora",
     readTime: "9 min read",
     image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+      landing1
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const articles: Article[] = [
     author: "Sebastián Mora",
     readTime: "9 min read",
     image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+      landing1
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const articles: Article[] = [
     author: "Sebastián Mora",
     readTime: "9 min read",
     image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+    landing1
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ const articles: Article[] = [
     author: "Sebastián Mora",
     readTime: "9 min read",
     image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
+    landing1
   },
 ];
 
@@ -271,7 +271,7 @@ export default function SapereArticlesPage() {
               key={link}
               href={link === "Instagram" ? "https://www.instagram.com/saperepublication/" : link === "TikTok" ? "https://www.tiktok.com/@saperepublication" : "https://www.linkedin.com/company/saperepublication"}
               style={{
-                fontFamily: "'Crimson Pro', serif",
+                fontFamily: "Crimson Pro",
                 fontSize: "14px",
                 color: "#c8c4a0",
                 textDecoration: "none",
