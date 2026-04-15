@@ -1,120 +1,21 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import landing1 from "../assets/landing1.png";
-// ── Types ──────────────────────────────────────────────────────────────────
+import logo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
+
 interface Article {
   id: number;
-  title: string;
-  author: string;
-  readTime: string;
   image: string;
 }
 
-// ── Data ───────────────────────────────────────────────────────────────────
 const articles: Article[] = [
-  {
-    id: 1,
-    title: "The architecture of silence",
-    author: "Sebastián Mora",
-    readTime: "9 min read",
-    image:
-      landing1
-  },
-  {
-    id: 2,
-    title: "The architecture of silence",
-    author: "Sebastián Mora",
-    readTime: "9 min read",
-    image:
-      landing1
-  },
-  {
-    id: 3,
-    title: "The architecture of silence",
-    author: "Sebastián Mora",
-    readTime: "9 min read",
-    image:
-    landing1
-  },
-  {
-    id: 4,
-    title: "The architecture of silence",
-    author: "Sebastián Mora",
-    readTime: "9 min read",
-    image:
-    landing1
-  },
+  { id: 1, image: landing1 },
+  { id: 2, image: landing1 },
+  { id: 3, image: landing1 },
+  { id: 4, image: landing1 },
 ];
 
-// ── Crest SVG (footer) ─────────────────────────────────────────────────────
-const CrestSVG = () => (
-  <svg
-    width="44"
-    height="44"
-    viewBox="0 0 200 200"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M100 10 L175 45 L175 110 C175 150 140 178 100 192 C60 178 25 150 25 110 L25 45 Z"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="2"
-    />
-    <path
-      d="M100 28 L160 58 L160 108 C160 140 133 163 100 175 C67 163 40 140 40 108 L40 58 Z"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1.2"
-    />
-    <path
-      d="M60 40 Q100 28 140 40 Q120 52 100 48 Q80 52 60 40Z"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1"
-    />
-    <path
-      d="M20 80 Q10 90 15 105 Q20 120 10 130"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1"
-    />
-    <path
-      d="M20 80 Q30 70 35 85 Q38 95 25 98"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1"
-    />
-    <path
-      d="M180 80 Q190 90 185 105 Q180 120 190 130"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1"
-    />
-    <path
-      d="M180 80 Q170 70 165 85 Q162 95 175 98"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1"
-    />
-    <text
-      x="100"
-      y="122"
-      textAnchor="middle"
-      fontFamily="Georgia, serif"
-      fontSize="52"
-      fill="#c8c4a0"
-    >
-      S
-    </text>
-    <path
-      d="M70 170 Q100 180 130 170"
-      fill="none"
-      stroke="#c8c4a0"
-      strokeWidth="1"
-    />
-  </svg>
-);
-
-// ── Article Card ───────────────────────────────────────────────────────────
+// ── Article Card ──
 const ArticleCard = ({ article }: { article: Article }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -122,67 +23,38 @@ const ArticleCard = ({ article }: { article: Article }) => {
     <article
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ cursor: "pointer" }}
+      style={{
+        cursor: "pointer",
+        width: "352px",
+        height: "523px",
+        overflow: "hidden",
+        borderRadius: "2px",
+      }}
     >
-      {/* Image */}
-      <div
+      <img
+        src={article.image}
+        alt="article"
         style={{
-          overflow: "hidden",
-          marginBottom: "16px",
-          borderRadius: "2px",
+          width: "352px",
+          height: "523px",
+          objectFit: "cover",
+          display: "block",
+          transition: "transform 0.55s",
+          transform: hovered ? "scale(1.04)" : "scale(1)",
         }}
-      >
-        <img
-          src={article.image}
-          alt={article.title}
-          style={{
-            width: "100%",
-            height: "380px",
-            objectFit: "cover",
-            display: "block",
-            transition: "transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-            transform: hovered ? "scale(1.04)" : "scale(1)",
-          }}
-        />
-      </div>
-
-      {/* Title */}
-      <h2
-        style={{
-          margin: "0 0 8px 0",
-          fontFamily: "Crimson Pro, serif",
-          fontWeight: 700,
-          fontSize: "22px",
-          color: "#2a3d2a",
-          lineHeight: 1.25,
-          transition: "color 0.2s ease",
-          letterSpacing: "-0.01em",
-        }}
-      >
-        {article.title}
-      </h2>
-
-      {/* Meta */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-          fontFamily: "'Crimson Pro', serif",
-          fontSize: "13.5px",
-          color: "#6b6b60",
-          letterSpacing: "0.01em",
-        }}
-      >
-        <span>{article.author}</span>
-        <span>{article.readTime}</span>
-      </div>
+      />
     </article>
   );
 };
 
-// ── Main Page ──────────────────────────────────────────────────────────────
 export default function SapereArticlesPage() {
+  const navigate = useNavigate();
+  const [logoHovered, setLogoHovered] = useState(false);
+
+  const handleLogoClick = () => {
+    navigate("/landing");
+  };
+
   return (
     <div
       style={{
@@ -192,14 +64,49 @@ export default function SapereArticlesPage() {
         flexDirection: "column",
       }}
     >
-      {/* ── Header / Logo ── */}
+      {/* Header with Logo */}
       <header
         style={{
           textAlign: "center",
-          paddingTop: "52px",
-          paddingBottom: "40px",
+          padding: "52px 0 40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "24px",
         }}
       >
+        {/* Clickable Logo Button */}
+        <button
+          onClick={handleLogoClick}
+          onMouseEnter={() => setLogoHovered(true)}
+          onMouseLeave={() => setLogoHovered(false)}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.3s ease",
+            transform: logoHovered ? "scale(1.08)" : "scale(1)",
+          }}
+          title="Go to Handing Page"
+        >
+          <img
+            src={logo}
+            alt="Sapere Logo - Click to navigate"
+            style={{
+              width: "60px",
+              height: "60px",
+              objectFit: "contain",
+              filter: logoHovered ? "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" : "none",
+              transition: "filter 0.3s ease",
+            }}
+          />
+        </button>
+
+        {/* Title */}
         <h1
           style={{
             margin: 0,
@@ -208,29 +115,28 @@ export default function SapereArticlesPage() {
             fontSize: "42px",
             letterSpacing: "0.28em",
             color: "#1e3322",
-            textTransform: "uppercase",
           }}
         >
-          SAP<span style={{ letterSpacing: "0.28em" }}>Ē</span>RE
+          SAPĒRE
         </h1>
       </header>
 
-      {/* ── Article Grid ── */}
+      {/* Articles Grid */}
       <main
         style={{
           flex: 1,
           maxWidth: "1000px",
           margin: "0 auto",
-          width: "100%",
           padding: "0 64px 80px",
-          boxSizing: "border-box",
+          width: "100%",
         }}
       >
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "repeat(2, 352px)",
             gap: "48px 56px",
+            justifyContent: "center",
           }}
         >
           {articles.map((article) => (
@@ -239,7 +145,7 @@ export default function SapereArticlesPage() {
         </div>
       </main>
 
-      {/* ── Footer ── */}
+      {/* Footer */}
       <footer
         style={{
           backgroundColor: "#2e2e1a",
@@ -249,53 +155,62 @@ export default function SapereArticlesPage() {
           justifyContent: "space-between",
         }}
       >
-        {/* Left: crest + copyright */}
+        {/* LEFT: Logo & Copyright */}
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <CrestSVG />
+          <img
+            src={logo}
+            alt="Sapere Logo"
+            style={{
+              width: "44px",
+              height: "44px",
+              objectFit: "contain",
+            }}
+          />
+
           <span
             style={{
               fontFamily: "Crimson Pro",
               fontSize: "13px",
               color: "#c8c4a0",
-              letterSpacing: "0.03em",
             }}
           >
             © 2026 Sapère. All rights reserved.
           </span>
         </div>
 
-        {/* Right: social links */}
+        {/* RIGHT: Social Links */}
         <nav style={{ display: "flex", gap: "32px" }}>
           {["Instagram", "TikTok", "Linkedin"].map((link) => (
             <a
               key={link}
-              href={link === "Instagram" ? "https://www.instagram.com/saperepublication/" : link === "TikTok" ? "https://www.tiktok.com/@saperepublication" : "https://www.linkedin.com/company/saperepublication"}
+              href={
+                link === "Instagram"
+                  ? "https://www.instagram.com/saperepublication/"
+                  : link === "TikTok"
+                  ? "https://www.tiktok.com/@saperepublication"
+                  : "https://www.linkedin.com/company/saperepublication"
+              }
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 fontFamily: "Crimson Pro",
                 fontSize: "14px",
                 color: "#c8c4a0",
                 textDecoration: "none",
-                letterSpacing: "0.04em",
-                transition: "color 0.2s ease",
+                transition: "color 0.3s ease",
               }}
-              onMouseEnter={(e) =>
-                ((e.target as HTMLAnchorElement).style.color = "#f0ead6")
-              }
-              onMouseLeave={(e) =>
-                ((e.target as HTMLAnchorElement).style.color = "#c8c4a0")
-              }
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = "#e8e4d8";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = "#c8c4a0";
+              }}
             >
               {link}
             </a>
           ))}
         </nav>
       </footer>
-
-      {/* Google Fonts */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap');
-        * { box-sizing: border-box; }
-      `}</style>
     </div>
   );
 }
