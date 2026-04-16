@@ -57,7 +57,7 @@ export default function LandingPage() {
               <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
                 Luxury is often talked about, but rarely understood.
               </p>
-              <p style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
                 Sapere was created to bring clarity to an industry that moves
                 fast, evolves constantly, and isn't always easy to navigate
                 from the inside.
@@ -85,7 +85,7 @@ export default function LandingPage() {
               </p>
 
               {/* Signature Image */}
-              <div className="flex justify-end">
+              <div className="flex justify-start md:justify-end mt-4">
                 <img 
                   src={signatureImg}
                   alt="Zol Briet Signature"
@@ -93,7 +93,6 @@ export default function LandingPage() {
                     height: "61px",
                     width: "151px",
                     objectFit: "contain",
-                   
                   }}
                 />
               </div>
@@ -106,11 +105,10 @@ export default function LandingPage() {
           <button
             type="button"
             onClick={() => navigate("/pillars")}
-            className="px-10 py-4 text-sm font-semibold tracking-widest transition-all duration-200"
+            className="px-10 py-4 text-sm font-semibold tracking-widest transition-all duration-200 font-work"
             style={{
               backgroundColor: "#043506",
-              color: "#f0edda",
-              fontFamily: "'Works Sans'",
+              color: "#f0edda",           
               letterSpacing: "0.1em",
               border: "none",
               cursor: "pointer",

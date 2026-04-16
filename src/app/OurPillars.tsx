@@ -28,6 +28,9 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobil
   const [hovered, setHovered] = useState(false);
   const lines = label.split("\n");
 
+  // Only apply hover effects if it is NOT mobile
+  const activeHover = hovered && !isMobile;
+
   return (
     <div
       onClick={onClick}
@@ -35,19 +38,18 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobil
       onMouseLeave={() => setHovered(false)}
       style={{
         position: "relative",
-        backgroundColor: hovered ? bg + "CC" : bg,
+        backgroundColor: activeHover ? bg + "CC" : bg,
         overflow: "hidden",
         cursor: "pointer",
         transition: "all 0.3s ease",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: hovered
+        transform: activeHover ? "translateY(-4px)" : "translateY(0)",
+        boxShadow: activeHover
           ? "0 12px 32px rgba(0,0,0,0.35)"
           : "0 2px 8px rgba(0,0,0,0.2)",
         borderRadius: "2px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // Mobile view me exactly 152px width aur height
         width: isMobile ? "152px" : (size === "large" ? "232px" : "179px"),
         height: isMobile ? "152px" : (size === "large" ? "232px" : "179px"),
       }}
@@ -87,7 +89,6 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobil
             style={{
               fontFamily: "'Crimson Pro', serif",
               fontWeight: 600,
-              // Font size adjusted for 152px box on mobile to prevent text overflow
               fontSize: isMobile ? "13px" : "clamp(20px, 1.1vw, 13px)",
               letterSpacing: "0.12em",
               color: "#f0ead6",
@@ -124,7 +125,6 @@ export default function OurPillars() {
         backgroundColor: "#332C0F",
         minHeight: "100vh",
         padding: isMobile ? "60px 24px" : "80px 64px",
-        fontFamily: "'Crimson Pro', serif",
         display: "flex",
         justifyContent: "center",
       }}
@@ -135,34 +135,39 @@ export default function OurPillars() {
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            alignItems: "center",
-            gap: isMobile ? "24px" : "48px",
+            alignItems: isMobile ? "center" : "center",
+            justifyContent: isMobile ? "center" : "flex-start",
+            gap: isMobile ? "16px" : "48px",
             marginBottom: isMobile ? "40px" : "56px",
+            width: "100%",
           }}
         >
           <h1
             style={{
               margin: 0,
-              fontWeight: 400,
-              fontSize: isMobile ? "56px" : "clamp(90px, 5vw, 72px)",
+              fontWeight: 600,
+              fontSize: isMobile ? "44px" : "clamp(90px, 5vw, 72px)",
               color: "#f0ead6",
               lineHeight: 1.1,
+              fontFamily: "'Crimson Pro', serif",
               textAlign: isMobile ? "center" : "left",
             }}
           >
             Our Pillars
           </h1>
 
-          <p
+          <p className="font-work"
             style={{
-              flex: 1,
-              fontSize: isMobile ? "15px" : "16px",
-              color: "#c8c4a0",
-              lineHeight: 1.6,
-              textAlign: isMobile ? "center" : "left",
-              maxWidth: "600px",
+              flex: isMobile ? "none" : 1,
+              // Takes exactly 320px width on mobile (152px box + 16px gap + 152px box)
+              width: isMobile ? "320px" : "100%", 
+              maxWidth: isMobile ? "320px" : "600px",
+              fontSize: isMobile ? "14px" : "16px",
+              color: "#e8e4d8",
+              lineHeight: 1.5,
+              textAlign: isMobile ? "center" : "left", // Centers the text lines within the 320px block
               paddingTop: isMobile ? "0px" : "12px",
-              fontFamily: "'Crimson Pro', serif",
+              margin: 0,
               fontWeight: 400,
             }}
           >
@@ -188,9 +193,8 @@ export default function OurPillars() {
           <div
             style={{
               display: "grid",
-              // Mobile par explicitly 2 columns of 152px banaye hain, desktop par 4 columns
               gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(4, 1fr)",
-              justifyContent: isMobile ? "center" : "unset", // Center the grid on mobile
+              justifyContent: isMobile ? "center" : "unset",
               gap: "16px",
               width: "100%",
             }}
@@ -208,9 +212,8 @@ export default function OurPillars() {
           <div
             style={{
               display: "grid",
-              // Mobile par explicitly 2 columns of 152px, desktop par 5 columns
               gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(5, 1fr)",
-              justifyContent: isMobile ? "center" : "unset", // Center the grid on mobile
+              justifyContent: isMobile ? "center" : "unset",
               gap: "16px",
               width: "100%",
               marginTop: isMobile ? "0px" : "24px",

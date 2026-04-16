@@ -6,24 +6,24 @@ import logo1 from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 
 interface Article {
   id: number;
+  title: string;
+  author: string;
+  readTime: string;
   image: string;
 }
 
-// Removed title, author, and readTime as requested
 const articles: Article[] = [
-  { id: 1, image: landing1 },
-  { id: 2, image: landing1 },
-  { id: 3, image: landing1 },
-  { id: 4, image: landing1 },
+  { id: 1, title: "The architecture of silence", author: "Sebastián Mora", readTime: "9 min read", image: landing1 },
+  { id: 2, title: "The architecture of silence", author: "Sebastián Mora", readTime: "9 min read", image: landing1 },
+  { id: 3, title: "The architecture of silence", author: "Sebastián Mora", readTime: "9 min read", image: landing1 },
+  { id: 4, title: "The architecture of silence", author: "Sebastián Mora", readTime: "9 min read", image: landing1 },
 ];
 
-// ── Article Card ──
 const ArticleCard = ({ article, isMobile }: { article: Article; isMobile: boolean }) => {
   return (
     <article
       style={{
         cursor: "pointer",
-        // Mobile aur desktop dono ke liye fix width set ki hai
         width: isMobile ? "325px" : "352px",
         display: "flex",
         flexDirection: "column",
@@ -33,10 +33,10 @@ const ArticleCard = ({ article, isMobile }: { article: Article; isMobile: boolea
       <div
         style={{
           width: "100%",
-          // Height ko explicitly set kar diya mobile aur desktop ke liye
           height: isMobile ? "365px" : "523px",
           overflow: "hidden",
           borderRadius: "2px",
+          marginBottom: "16px",
         }}
       >
         <img
@@ -45,13 +45,40 @@ const ArticleCard = ({ article, isMobile }: { article: Article; isMobile: boolea
           style={{
             width: "100%",
             height: "100%",
-            // Mobile me 'fill' taaki puri image usi 325x365 box me fit ho jaye bina kate.
-            // Note: Agar image stretched lage, to aap "fill" ki jagah "contain" likh sakte hain.
             objectFit: isMobile ? "fill" : "cover",
             display: "block",
-            // Removed transition and transform for hover effect
           }}
         />
+      </div>
+
+      {/* Title */}
+      <h2
+        style={{
+          margin: "0 0 8px 0",
+          fontFamily: "'Crimson Pro', serif",
+          fontWeight: 700,
+          fontSize: isMobile ? "24px" : "24px",
+          color: "#2a3d2a",
+          lineHeight: 1.25,
+        }}
+      >
+        {article.title}
+      </h2>
+
+      {/* Author + Read Time */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
+          fontFamily: "'Crimson Pro', serif",
+          fontSize: "12px",
+          color: "#6b6b60",
+          lineHeight: 1.13,
+        }}
+      >
+        <span>{article.author}</span>
+        <span>{article.readTime}</span>
       </div>
     </article>
   );
@@ -62,10 +89,9 @@ export default function SapereArticlesPage() {
   const [logoHovered, setLogoHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Hook to detect screen size for responsiveness
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -83,7 +109,7 @@ export default function SapereArticlesPage() {
         flexDirection: "column",
       }}
     >
-      {/* Header with Logo */}
+      {/* Header */}
       <header
         style={{
           textAlign: "center",
@@ -115,7 +141,7 @@ export default function SapereArticlesPage() {
             src={logo}
             alt="Sapere Logo - Click to navigate"
             style={{
-              width: isMobile ? "140px" : "179px", // Slightly smaller logo on mobile
+              width: isMobile ? "140px" : "179px",
               height: "auto",
               objectFit: "contain",
               filter: logoHovered ? "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" : "none",
@@ -138,7 +164,6 @@ export default function SapereArticlesPage() {
         <div
           style={{
             display: "grid",
-            // Mobile par 325px ka ek column, Desktop par 352px ke 2 columns
             gridTemplateColumns: isMobile ? "325px" : "repeat(2, 352px)",
             gap: isMobile ? "40px" : "48px 56px",
             justifyContent: "center",
@@ -156,7 +181,7 @@ export default function SapereArticlesPage() {
           backgroundColor: "#2e2e1a",
           padding: isMobile ? "32px 24px" : "28px 64px",
           display: "flex",
-          flexDirection: "row", // Flex row even on mobile to split left and right sides
+          flexDirection: "row",
           alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
         }}
@@ -165,7 +190,7 @@ export default function SapereArticlesPage() {
         <div
           style={{
             display: "flex",
-            flexDirection: isMobile ? "column" : "row", // Stack logo & copyright on mobile
+            flexDirection: isMobile ? "column" : "row",
             alignItems: isMobile ? "flex-start" : "center",
             gap: isMobile ? "12px" : "16px",
           }}
@@ -179,13 +204,12 @@ export default function SapereArticlesPage() {
               objectFit: "contain",
             }}
           />
-
           <span
             style={{
               fontFamily: "'Crimson Pro', serif",
               fontSize: "13px",
               color: "#c8c4a0",
-              maxWidth: isMobile ? "140px" : "auto", // Wraps text neatly on mobile
+              maxWidth: isMobile ? "140px" : "auto",
               lineHeight: 1.4,
             }}
           >
@@ -197,22 +221,16 @@ export default function SapereArticlesPage() {
         <nav
           style={{
             display: "flex",
-            flexDirection: isMobile ? "column" : "row", // Stack links on mobile
+            flexDirection: isMobile ? "column" : "row",
             gap: isMobile ? "12px" : "32px",
-            alignItems: isMobile ? "flex-start" : "center", // Align them neatly
+            alignItems: isMobile ? "flex-start" : "center",
           }}
         >
           {["Instagram", "TikTok", "LinkedIn"].map((link) => (
             <a
               key={link}
-              href={
-                link === "Instagram"
-                  ? "https://www.instagram.com/saperepublication/"
-                  : link === "TikTok"
-                  ? "https://www.tiktok.com/@saperepublication"
-                  : "https://www.linkedin.com/company/saperepublication"
-              }
-              target="_blank"
+              href={link === "Instagram" ? "https://www.instagram.com/saperepublication/" : "#"}
+              target={link === "Instagram" ? "_blank" : "_self"}
               rel="noopener noreferrer"
               style={{
                 fontFamily: "'Crimson Pro', serif",
