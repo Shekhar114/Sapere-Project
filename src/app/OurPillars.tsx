@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ornamentImg from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 
@@ -21,9 +21,10 @@ interface PillarCardProps {
   size: string;
   bg: string;
   onClick: () => void;
+  isMobile: boolean;
 }
 
-const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick }: PillarCardProps) => {
+const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobile }: PillarCardProps) => {
   const [hovered, setHovered] = useState(false);
   const lines = label.split("\n");
 
@@ -34,7 +35,7 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick }: Pilla
       onMouseLeave={() => setHovered(false)}
       style={{
         position: "relative",
-        backgroundColor: hovered ? bg + "CC" : bg, // 🔥 hover slightly darker
+        backgroundColor: hovered ? bg + "CC" : bg,
         overflow: "hidden",
         cursor: "pointer",
         transition: "all 0.3s ease",
@@ -46,8 +47,9 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick }: Pilla
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        width: size === "large" ? "232px" : "179px",
-        height: size === "large" ? "232px" : "179px",
+        // Mobile view me exactly 152px width aur height
+        width: isMobile ? "152px" : (size === "large" ? "232px" : "179px"),
+        height: isMobile ? "152px" : (size === "large" ? "232px" : "179px"),
       }}
     >
       {hasPattern && (
@@ -85,7 +87,8 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick }: Pilla
             style={{
               fontFamily: "'Crimson Pro', serif",
               fontWeight: 600,
-              fontSize: "clamp(20px, 1.1vw, 13px)",
+              // Font size adjusted for 152px box on mobile to prevent text overflow
+              fontSize: isMobile ? "13px" : "clamp(20px, 1.1vw, 13px)",
               letterSpacing: "0.12em",
               color: "#f0ead6",
               lineHeight: 1.38,
@@ -102,6 +105,16 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick }: Pilla
 
 export default function OurPillars() {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Hook to detect screen size
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize(); // Set initially
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const topRow = pillars.slice(0, 4);
   const bottomRow = pillars.slice(4);
 
@@ -110,7 +123,7 @@ export default function OurPillars() {
       style={{
         backgroundColor: "#332C0F",
         minHeight: "100vh",
-        padding: "80px 64px",
+        padding: isMobile ? "60px 24px" : "80px 64px",
         fontFamily: "'Crimson Pro', serif",
         display: "flex",
         justifyContent: "center",
@@ -121,18 +134,20 @@ export default function OurPillars() {
         <div
           style={{
             display: "flex",
+            flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
-            gap: "48px",
-            marginBottom: "56px",
+            gap: isMobile ? "24px" : "48px",
+            marginBottom: isMobile ? "40px" : "56px",
           }}
         >
           <h1
             style={{
               margin: 0,
               fontWeight: 400,
-              fontSize: "clamp(90px, 5vw, 72px)",
+              fontSize: isMobile ? "56px" : "clamp(90px, 5vw, 72px)",
               color: "#f0ead6",
               lineHeight: 1.1,
+              textAlign: isMobile ? "center" : "left",
             }}
           >
             Our Pillars
@@ -141,18 +156,24 @@ export default function OurPillars() {
           <p
             style={{
               flex: 1,
-              fontSize: "16px",
+              fontSize: isMobile ? "15px" : "16px",
               color: "#c8c4a0",
               lineHeight: 1.6,
-              textAlign: "left",
+              textAlign: isMobile ? "center" : "left",
               maxWidth: "600px",
-              paddingTop: "12px",
+              paddingTop: isMobile ? "0px" : "12px",
               fontFamily: "'Crimson Pro', serif",
               fontWeight: 400,
             }}
           >
-            Sapere is built on nine core pillars, each explaining the intrinsic
-            foundation <br />of the luxury industry
+            {isMobile ? (
+              "Sapere is built on nine core pillars, each explaining the intrinsic foundation of the luxury industry"
+            ) : (
+              <>
+                Sapere is built on nine core pillars, each explaining the intrinsic
+                foundation <br />of the luxury industry
+              </>
+            )}
           </p>
         </div>
 
@@ -161,33 +182,47 @@ export default function OurPillars() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: "40px",
+            gap: isMobile ? "16px" : "40px", 
           }}
         >
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
+              // Mobile par explicitly 2 columns of 152px banaye hain, desktop par 4 columns
+              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(4, 1fr)",
+              justifyContent: isMobile ? "center" : "unset", // Center the grid on mobile
               gap: "16px",
               width: "100%",
             }}
           >
             {topRow.map((pillar) => (
-              <PillarCard key={pillar.id} {...pillar} onClick={() => navigate("/articles")} />
+              <PillarCard 
+                key={pillar.id} 
+                {...pillar} 
+                isMobile={isMobile} 
+                onClick={() => navigate("/articles")} 
+              />
             ))}
           </div>
 
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
+              // Mobile par explicitly 2 columns of 152px, desktop par 5 columns
+              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(5, 1fr)",
+              justifyContent: isMobile ? "center" : "unset", // Center the grid on mobile
               gap: "16px",
               width: "100%",
-              marginTop: "24px",
+              marginTop: isMobile ? "0px" : "24px",
             }}
           >
             {bottomRow.map((pillar) => (
-              <PillarCard key={pillar.id} {...pillar} onClick={() => navigate("/articles")} />
+              <PillarCard 
+                key={pillar.id} 
+                {...pillar} 
+                isMobile={isMobile} 
+                onClick={() => navigate("/articles")} 
+              />
             ))}
           </div>
         </div>

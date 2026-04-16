@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import landingImg from "../assets/landing.png";
+import signatureImg from "../assets/signature.png";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function LandingPage() {
             {/* Adjust maxHeight to control image height */}
             <div
               className="relative w-full overflow-hidden"
-              style={{ borderRadius: "32px", maxHeight: "567px", height: "567px" }}
+              style={{ borderRadius: "32px", maxHeight: "530px", height: "530px"}}
             >
               <img
                 src={landingImg}
@@ -56,7 +57,7 @@ export default function LandingPage() {
               <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
                 Luxury is often talked about, but rarely understood.
               </p>
-              <p>
+              <p style={{ fontSize: "1rem", lineHeight: "1.38" }}>
                 Sapere was created to bring clarity to an industry that moves
                 fast, evolves constantly, and isn't always easy to navigate
                 from the inside.
@@ -78,10 +79,24 @@ export default function LandingPage() {
                 see more clearly, think more critically, and move with
                 intention.
               </p>
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", marginBottom: "0px"}}>
                 For those building what comes next, to the future leaders of
                 luxury, shaped here.
               </p>
+
+              {/* Signature Image */}
+              <div className="flex justify-end">
+                <img 
+                  src={signatureImg}
+                  alt="Zol Briet Signature"
+                  style={{
+                    height: "61px",
+                    width: "151px",
+                    objectFit: "contain",
+                   
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
