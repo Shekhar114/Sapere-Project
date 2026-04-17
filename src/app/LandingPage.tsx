@@ -33,7 +33,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="w-full md:w-auto flex flex-col justify-start">
+          <div className="w-full md:w-auto flex flex-col justify-start max-sm:mt-4">
             <h1
               className="mb-6 md:mb-8 leading-tight"
               style={{
