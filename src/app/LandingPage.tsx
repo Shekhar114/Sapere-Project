@@ -7,10 +7,10 @@ export default function LandingPage() {
 
   return (
     <main
-      className="min-h-screen w-full flex flex-col items-center justify-center px-6 md:px-16 py-16 md:py-24"
+      className="min-h-screen w-full flex flex-col items-center justify-center px-4 md:px-16 py-6 md:py-24"
       style={{ backgroundColor: "#e8e4d8" }}>
-      <section className="w-full max-w-5xl">
-        <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start">
+      <section className="w-full max-w-5xl px-2 md:px-0">
+        <div className="flex flex-col md:flex-row md:gap-16 items-center md:items-start">
 
           <div className="w-full md:w-[42%] flex-shrink-0">
             {/* Adjust maxHeight to control image height */}
@@ -20,11 +20,11 @@ export default function LandingPage() {
             >
               <img
                 src={landingImg}
-                alt="Sapēre storefront"
+                alt="Sapēre storefront" 
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
+                  objectFit: "contain",
                   objectPosition: "center center",
                   borderRadius: "6px",
                   display: "block",
@@ -33,7 +33,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="w-full flex flex-col justify-start">
+          <div className="w-full md:w-auto flex flex-col justify-start">
             <h1
               className="mb-6 md:mb-8 leading-tight"
               style={{
@@ -58,7 +58,7 @@ export default function LandingPage() {
                 Luxury is often talked about, but rarely understood.
               </p>
               <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
-                Sapere was created to bring clarity to an industry that moves
+                Sapēre was created to bring clarity to an industry that moves
                 fast, evolves constantly, and isn't always easy to navigate
                 from the inside.
               </p>
@@ -74,7 +74,7 @@ export default function LandingPage() {
                 creates a real competitive advantage.
               </p>
               <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
-                Sapere brings together voices from across the industry to
+                Sapēre brings together voices from across the industry to
                 share insights, context, and direction. The kind that helps you
                 see more clearly, think more critically, and move with
                 intention.
@@ -85,7 +85,7 @@ export default function LandingPage() {
               </p>
 
               {/* Signature Image */}
-              <div className="flex justify-start md:justify-end mt-4">
+              <div className="flex justify-start md:justify-end">
                 <img 
                   src={signatureImg}
                   alt="Zol Briet Signature"
@@ -101,7 +101,7 @@ export default function LandingPage() {
         </div>
 
         {/* CTA Button */}
-        <div className="mt-14 md:mt-16 flex justify-center">
+        <div className="flex justify-center mt-8 md:mt-0">
           <button
             type="button"
             onClick={() => navigate("/pillars")}

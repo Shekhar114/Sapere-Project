@@ -89,7 +89,8 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobil
             style={{
               fontFamily: "'Crimson Pro', serif",
               fontWeight: 600,
-              fontSize: isMobile ? "13px" : "clamp(20px, 1.1vw, 13px)",
+              // Fixed CSS Clamp: min must be smaller than max
+              fontSize: isMobile ? "13px" : "clamp(13px, 1.1vw, 20px)",
               letterSpacing: "0.12em",
               color: "#f0ead6",
               lineHeight: 1.38,
@@ -106,12 +107,17 @@ const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobil
 
 export default function OurPillars() {
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
+  
+  // Instantly initialize state to avoid layout flashes on mobile load
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
 
-  // Hook to detect screen size
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize(); // Set initially
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -127,6 +133,8 @@ export default function OurPillars() {
         padding: isMobile ? "60px 24px" : "80px 64px",
         display: "flex",
         justifyContent: "center",
+        boxSizing: "border-box",
+        overflowX: "hidden"
       }}
     >
       <div style={{ width: "100%", maxWidth: "1050px" }}>
@@ -135,7 +143,7 @@ export default function OurPillars() {
           style={{
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
-            alignItems: isMobile ? "center" : "center",
+            alignItems: "center",
             justifyContent: isMobile ? "center" : "flex-start",
             gap: isMobile ? "16px" : "48px",
             marginBottom: isMobile ? "40px" : "56px",
@@ -146,7 +154,8 @@ export default function OurPillars() {
             style={{
               margin: 0,
               fontWeight: 600,
-              fontSize: isMobile ? "44px" : "clamp(90px, 5vw, 72px)",
+              // Fixed CSS Clamp
+              fontSize: isMobile ? "44px" : "clamp(72px, 5vw, 90px)",
               color: "#f0ead6",
               lineHeight: 1.1,
               fontFamily: "'Crimson Pro', serif",
@@ -159,13 +168,13 @@ export default function OurPillars() {
           <p className="font-work"
             style={{
               flex: isMobile ? "none" : 1,
-              // Takes exactly 320px width on mobile (152px box + 16px gap + 152px box)
-              width: isMobile ? "320px" : "100%", 
+              // Changed from strict "320px" to prevent overflow on very narrow screens
+              width: isMobile ? "min(320px, 100%)" : "100%", 
               maxWidth: isMobile ? "320px" : "600px",
               fontSize: isMobile ? "14px" : "16px",
               color: "#e8e4d8",
               lineHeight: 1.5,
-              textAlign: isMobile ? "center" : "left", // Centers the text lines within the 320px block
+              textAlign: isMobile ? "center" : "left", 
               paddingTop: isMobile ? "0px" : "12px",
               margin: 0,
               fontWeight: 400,
@@ -175,7 +184,7 @@ export default function OurPillars() {
               "Sapere is built on nine core pillars, each explaining the intrinsic foundation of the luxury industry"
             ) : (
               <>
-                Sapere is built on nine core pillars, each explaining the intrinsic
+                Sapēre is built on nine core pillars, each explaining the intrinsic
                 foundation <br />of the luxury industry
               </>
             )}
@@ -186,15 +195,18 @@ export default function OurPillars() {
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: isMobile ? "center" : "flex-start",
             gap: isMobile ? "16px" : "40px", 
+            width: "100%"
           }}
         >
+          {/* Top Row Grid */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(4, 1fr)",
-              justifyContent: isMobile ? "center" : "unset",
+              // Adjusted to exact widths for desktop to ensure proper spacing
+              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(4, 232px)",
+              justifyContent: isMobile ? "center" : "space-between",
               gap: "16px",
               width: "100%",
             }}
@@ -209,11 +221,13 @@ export default function OurPillars() {
             ))}
           </div>
 
+          {/* Bottom Row Grid */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(5, 1fr)",
-              justifyContent: isMobile ? "center" : "unset",
+              // Adjusted to exact widths for desktop
+              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(5, 179px)",
+              justifyContent: isMobile ? "center" : "space-between",
               gap: "16px",
               width: "100%",
               marginTop: isMobile ? "0px" : "24px",

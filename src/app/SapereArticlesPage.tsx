@@ -33,7 +33,7 @@ const ArticleCard = ({ article, isMobile }: { article: Article; isMobile: boolea
       <div
         style={{
           width: "100%",
-          height: isMobile ? "365px" : "523px",
+          height: isMobile ? "365px" : "461px",
           overflow: "hidden",
           borderRadius: "2px",
           marginBottom: "16px",
