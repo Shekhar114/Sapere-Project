@@ -181,7 +181,7 @@ export default function OurPillars() {
             }}
           >
             {isMobile ? (
-              "Sapere is built on nine core pillars, each explaining the intrinsic foundation of the luxury industry"
+              "Sapēre is built on nine core pillars, each explaining the intrinsic foundation of the luxury industry"
             ) : (
               <>
                 Sapēre is built on nine core pillars, each explaining the intrinsic

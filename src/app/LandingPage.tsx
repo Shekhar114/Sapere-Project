@@ -54,38 +54,38 @@ export default function LandingPage() {
                 lineHeight: "1.75",
               }}
             >
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", textAlign: "justify" }}>
                 Luxury is often talked about, but rarely understood.
               </p>
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", textAlign: "justify" }}>
                 Sapēre was created to bring clarity to an industry that moves
                 fast, evolves constantly, and isn't always easy to navigate
                 from the inside.
               </p>
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" , textAlign: "justify" }}>
                 It's a space for professionals across the luxury world, from
                 fashion to hospitality, strategy to culture, who want
                 perspectives that go beyond trends. Not just to stay informed,
                 but to make better decisions in their careers and within the
                 industry.
               </p>
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", textAlign: "justify" }}>
                 Because understanding what's happening, and why, is what
                 creates a real competitive advantage.
               </p>
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38" }}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", textAlign: "justify" }}>
                 Sapēre brings together voices from across the industry to
                 share insights, context, and direction. The kind that helps you
                 see more clearly, think more critically, and move with
                 intention.
               </p>
-              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", marginBottom: "0px"}}>
+              <p className="font-semibold" style={{ fontSize: "1rem", lineHeight: "1.38", marginBottom: "0px", textAlign: "justify" }}>
                 For those building what comes next, to the future leaders of
                 luxury, shaped here.
               </p>
 
               {/* Signature Image */}
-              <div className="flex justify-start md:justify-end">
+              <div className="flex justify-start md:justify-end mt-2">
                 <img 
                   src={signatureImg}
                   alt="Zol Briet Signature"
