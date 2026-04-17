@@ -213,7 +213,7 @@ export default function SapereArticlesPage() {
               lineHeight: 1.4,
             }}
           >
-            © 2026 Sapère. All rights reserved.
+            © 2026 Sapēre. All rights reserved.
           </span>
         </div>
 
