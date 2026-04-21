@@ -19,14 +19,24 @@ const articles: Article[] = [
   { id: 4, title: "The architecture of silence", author: "Sebastián Mora", readTime: "9 min read", image: landing1 },
 ];
 
-const ArticleCard = ({ article, isMobile }: { article: Article; isMobile: boolean }) => {
+const ArticleCard = ({ article, isMobile, onArticleClick }: { article: Article; isMobile: boolean; onArticleClick: (article: Article) => void }) => {
   return (
     <article
+      onClick={() => onArticleClick(article)}
       style={{
         cursor: "pointer",
         width: isMobile ? "325px" : "352px",
         display: "flex",
         flexDirection: "column",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-8px)";
+        e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.1)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
       }}
     >
       {/* Image Container */}
@@ -100,6 +110,10 @@ export default function SapereArticlesPage() {
     navigate("/landing");
   };
 
+  const handleArticleClick = (article: Article) => {
+    navigate("/article", { state: { article } });
+  };
+
   return (
     <div
       style={{
@@ -170,7 +184,12 @@ export default function SapereArticlesPage() {
           }}
         >
           {articles.map((article) => (
-            <ArticleCard key={article.id} article={article} isMobile={isMobile} />
+            <ArticleCard 
+              key={article.id} 
+              article={article} 
+              isMobile={isMobile}
+              onArticleClick={handleArticleClick}
+            />
           ))}
         </div>
       </main>
