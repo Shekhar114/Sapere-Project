@@ -104,7 +104,7 @@ const SapereArticle: React.FC<ArticleProps> = ({
       </main>
 
       {/* Footer - Existing responsive logic maintained and polished */}
-      <footer className="bg-[#262318] text-[#F2EDE4]/60 py-8 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-sans tracking-widest uppercase">
+      <footer className=" bg-[#332C0F] text-[#F2EDE4]/60 py-8 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-sans tracking-widest uppercase">
         <div className="flex items-center gap-4 mb-6 md:mb-0">
           <img
             src={logo1}
