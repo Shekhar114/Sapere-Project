@@ -44,7 +44,7 @@ const SapereArticle: React.FC<ArticleProps> = ({
     <div className="min-h-screen flex flex-col bg-[#F2EDE4] text-[#1A2F1C] font-serif selection:bg-[#1A2F1C] selection:text-white">
       
       {/* Top Logo Section */}
-      <header className="flex justify-center py-14">
+      <header className="flex justify-center py-14 w-[695px] mx-auto">
         <img 
           src={logo} 
           alt="Sapere Logo" 
@@ -54,20 +54,19 @@ const SapereArticle: React.FC<ArticleProps> = ({
       </header>
 
       <main className="flex-grow max-w-4xl mx-auto px-6 pb-20">
-        <p className="uppercase tracking-[0.2em] text-[10px] md:text-xs font-sans font-semibold mb-8 opacity-70">
+        <p className="uppercase tracking-[0.2em] text-[10px] md:text-xs font-sans font-semibold mb-8 opacity-70 text-[#6F7140] font-[12px]/[16px] ">
           {category}
         </p>
 
-        <h1 className="md:text-[60px] leading-[1.1] font-medium mb-12 tracking-tight">
+        <h1 className="text-[60px]/[75px] leading-[1.1] font-medium mb-12 tracking-tight w-[704px] ">
           {title}
         </h1>
 
         <hr className="border-[#1A2F1C]/20 mb-6" />
-
         {/* Meta Info Bar with Logic */}
-        <div className="flex justify-between items-center text-xs md:text-sm font-sans mb-12">
-          <div className="flex items-center gap-2 md:gap-3">
-            <span className="font-bold border-b border-transparent hover:border-[#1A2F1C] cursor-pointer transition-colors">
+        <div className="flex justify-between items-center text-xs md:text-sm font-sans mb-7.5">
+          <div className="flex items-center gap-2 md:gap-3 font-worksans">
+            <span className="border-b border-transparent cursor-pointer transition-colors text-[#043506] font-[14px]/[1.25]">
               {author}
             </span>
             <span className="opacity-30">•</span>
@@ -96,7 +95,7 @@ const SapereArticle: React.FC<ArticleProps> = ({
             </button>
           </div>
         </div>
-
+        <hr className="border-[#1A2F1C]/20 mb-6" />
         <p className="text-[18px]/[1.61] leading-relaxed opacity-90 font-normal w-full text-justify">
           {excerpt}
         </p>
