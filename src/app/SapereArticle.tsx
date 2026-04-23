@@ -124,7 +124,7 @@ export default function SapereArticle() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#332C0F] text-[#F2EDE4]/60 py-8 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-sans tracking-widest uppercase">
+      {/* <footer className="bg-[#332C0F] text-[#F2EDE4]/60 py-8 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-sans tracking-widest uppercase">
         <div className="flex items-center gap-4 mb-6 md:mb-0">
           <img src={logo1} alt="Sapere Icon" className="w-[36px] md:w-[44px] h-auto object-contain" />
           <span>© 2026 Sapēre. All rights reserved.</span>
@@ -134,7 +134,35 @@ export default function SapereArticle() {
           <a href="#" className="hover:text-white transition-colors">TikTok</a>
           <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
         </div>
-      </footer>
+      </footer> */}
+      <footer style={{
+              backgroundColor: "#2e2e1a",
+              padding: isMobile ? "32px 24px" : "28px 64px",
+              display: "flex",
+              alignItems: isMobile ? "flex-start" : "center",
+              justifyContent: "space-between",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <img src={logo1} alt="Sapere Logo" style={{ width: "44px", height: "44px", objectFit: "contain" }} />
+                <span style={{ fontFamily: "'Crimson Pro', serif", fontSize: "13px", color: "#c8c4a0" }}>
+                  © 2026 Sapēre. All rights reserved.
+                </span>
+              </div>
+              <nav style={{ display: "flex", gap: isMobile ? "12px" : "32px", flexDirection: isMobile ? "column" : "row" }}>
+                {["Instagram", "TikTok", "LinkedIn"].map((link) => (
+                  <a key={link}
+                    href={link === "Instagram" ? "https://www.instagram.com/saperepublication/" : "#"}
+                    target={link === "Instagram" ? "_blank" : "_self"}
+                    rel="noopener noreferrer"
+                    style={{ fontFamily: "'Crimson Pro', serif", fontSize: "14px", color: "#c8c4a0", textDecoration: "none" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#e8e4d8")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#c8c4a0")}
+                  >
+                    {link}
+                  </a>
+                ))}
+              </nav>
+            </footer>
     </div>
   );
 }
