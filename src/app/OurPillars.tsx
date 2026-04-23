@@ -5,7 +5,7 @@ import ornamentImg from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png"
 const pillars = [
   { id: 1, label: "HOSPITALITY,\nREAL ESTATE &\nPLACES", bg: "#6F7140", hasPattern: true, patternSide: "left", size: "large" },
   { id: 2, label: "FASHION &\nCREATIVE\nDIRECTION", bg: "#999678", hasPattern: false, patternSide: "none", size: "large" },
-  { id: 3, label: "HOSPITALITY,\nREAL ESTATE &\nPLACES", bg: "#656643", hasPattern: true, patternSide: "left", size: "large" },
+  { id: 3, label: "TECHNOLOGY,\nINNOVATION &\nSUSTAINABILITY", bg: "#656643", hasPattern: true, patternSide: "left", size: "large" },
   { id: 4, label: "INDUSTRY NEWS\n& THE BUSINESS\nOF LUXURY", bg: "#6F7140", hasPattern: true, patternSide: "right", size: "large" },
   { id: 5, label: "BEAUTY\nINDUSTRY", bg: "#999678", hasPattern: false, patternSide: "none", size: "small" },
   { id: 6, label: "JEWELRY &\nWATCHES", bg: "#656643", hasPattern: true, patternSide: "left", size: "small" },
