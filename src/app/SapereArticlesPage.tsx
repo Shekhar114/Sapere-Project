@@ -103,98 +103,100 @@ export default function SapereArticlesPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        // Step 1: Posts fetch karo
-        const res = await fetch(`${WP_API}/posts?per_page=10`);
-        const posts = await res.json();
+  const fetchPosts = async (isBackground = false) => {
+    try {
+      if (!isBackground) setLoading(true);
+      
+      
+      const res = await fetch(`${WP_API}/posts?per_page=10&_embed`);
+      if (!res.ok) throw new Error("Failed to fetch posts");
+      
+      const posts = await res.json();
+      console.log("Fetched posts with embed:", posts);
 
-        // Step 2: Har post ke liye media alag se fetch karo
-        const formatted: Article[] = await Promise.all(
-          posts.map(async (post: any) => {
-            const words = post.content.rendered
-              .replace(/<[^>]+>/g, "")
-              .split(/\s+/).length;
+      // Step 2: Format posts using embedded data
+      const formatted: Article[] = posts.map((post: any) => {
+        const words = post.content.rendered
+          ? post.content.rendered.replace(/<[^>]+>/g, "").split(/\s+/).length
+          : 0;
 
-            const excerpt = post.excerpt.rendered
+        const excerpt = post.excerpt?.rendered
+          ? post.excerpt.rendered
               .replace(/<[^>]+>/g, "")
               .replace(/\[…\]/g, "...")
               .replace(/\[&hellip;\]/g, "...")
-              .trim();
+              .trim()
+          : "";
 
-            // Featured image - media ID se directly fetch karo
-            let image = landing1;
-            if (post.featured_media && post.featured_media !== 0) {
-              try {
-                const mediaRes = await fetch(
-                  `${WP_API}/media/${post.featured_media}`
-                );
-                const mediaData = await mediaRes.json();
-                // Full size image lo, ya large, ya medium - jo bhi mile
-                image =
-                  mediaData?.media_details?.sizes?.full?.source_url ||
-                  mediaData?.media_details?.sizes?.large?.source_url ||
-                  mediaData?.media_details?.sizes?.medium_large?.source_url ||
-                  mediaData?.media_details?.sizes?.medium?.source_url ||
-                  mediaData?.source_url ||
-                  landing1;
-              } catch {
-                image = landing1;
-              }
-            }
+        // Featured image extraction from embedded data
+        let image = landing1;
+        const embeddedMedia = post._embedded?.["wp:featuredmedia"]?.[0];
+        if (embeddedMedia) {
+          image =
+            embeddedMedia?.media_details?.sizes?.full?.source_url ||
+            embeddedMedia?.media_details?.sizes?.large?.source_url ||
+            embeddedMedia?.source_url ||
+            landing1;
+        }
 
-            // Author fetch karo
-            let author = "Sapere";
-            try {
-              const authorRes = await fetch(`${WP_API}/users/${post.author}`);
-              const authorData = await authorRes.json();
-              author = authorData?.name || "Sapere";
-            } catch {
-              author = "Sapere";
-            }
+        // Author extraction from embedded data
+        const author = post._embedded?.["author"]?.[0]?.name || "Sapere";
 
-            // Category fetch karo
-            let category = "Article";
-            if (post.categories && post.categories.length > 0) {
-              try {
-                const catRes = await fetch(
-                  `${WP_API}/categories/${post.categories[0]}`
-                );
-                const catData = await catRes.json();
-                category = catData?.name || "Article";
-              } catch {
-                category = "Article";
-              }
-            }
+        // Category extraction from embedded data
+        let category = "Article";
+        const categories = post._embedded?.["wp:term"]?.[0];
+        if (categories && categories.length > 0) {
+          category = categories[0].name || "Article";
+        }
 
-            return {
-              id: post.id,
-              title: post.title.rendered,
-              author,
-              date: new Date(post.date).toLocaleDateString("en-US", {
+        return {
+          id: post.id,
+          title: post.title?.rendered || "Untitled",
+          author,
+          date: post.date
+            ? new Date(post.date).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              }),
-              excerpt,
-              category,
-              image,
-              readTime: `${Math.max(1, Math.ceil(words / 200))} min read`,
-              content: post.content.rendered,
-            };
-          })
-        );
+              })
+            : "",
+          excerpt,
+          category,
+          image,
+          readTime: `${Math.max(1, Math.ceil(words / 200))} min read`,
+          content: post.content?.rendered || "",
+        };
+      });
 
-        setArticles(formatted);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setArticles(formatted);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      if (!isBackground) setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    // Initial fetch
     fetchPosts();
+
+    // Auto-sync: Check for new posts every 60 seconds
+    const interval = setInterval(() => {
+      console.log("Auto-syncing articles...");
+      fetchPosts(true);
+    }, 6000);
+
+    // Focus-sync: Check for new posts when user returns to the tab
+    const handleFocus = () => {
+      console.log("Window focused, refreshing articles...");
+      fetchPosts(true);
+    };
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+    };
   }, []);
 
   if (loading) return (
