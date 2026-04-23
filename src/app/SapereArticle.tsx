@@ -1,32 +1,34 @@
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/saperelogo.png";
 import logo1 from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 
-interface ArticleProps {
-  category?: string;
-  title?: string;
-  author?: string;
-  date?: string;
-  readTime?: string;
-  excerpt?: string;
-}
-
-const SapereArticle: React.FC<ArticleProps> = ({
-  category = "FASHION & CREATIVE DIRECTION",
-  title = "The economics of fashion show production in the digital age",
-  author = "Margot Delacroix",
-  date = "February 14, 2026",
-  readTime = "10 min read",
-  excerpt = "Fashion shows remain one of the most visible expenses in luxury brand marketing, yet their value proposition has fundamentally shifted. This analysis examines the strategic logic behind runway investments in an era of digital saturation."
-}) => {
+export default function SapereArticle() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const article = state?.article;
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Agar koi direct URL pe aaye bina data ke
+  if (!article) {
+    navigate("/articles");
+    return null;
+  }
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: title,
-          text: excerpt,
+          title: article.title,
+          text: article.excerpt,
           url: window.location.href,
         });
       } catch (err) {
@@ -39,53 +41,63 @@ const SapereArticle: React.FC<ArticleProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F2EDE4] text-[#1A2F1C] font-serif selection:bg-[#1A2F1C] selection:text-white">
-      
-      {/* Top Logo Section - Made responsive width */}
+    <div className="min-h-screen flex flex-col bg-[#F2EDE4] text-[#1A2F1C] font-serif">
+
+      {/* Header */}
       <header className="flex justify-center py-8 md:py-14 w-full max-w-[695px] mx-auto px-6">
-        <img 
-          src={logo} 
-          alt="Sapere Logo" 
-          className="object-contain w-[140px] md:w-[179px] h-auto"
-          onError={(e) => (e.currentTarget.style.display = 'none')}
+        <img
+          src={logo}
+          alt="Sapere Logo"
+          className="object-contain w-[140px] md:w-[179px] h-auto cursor-pointer"
+          onClick={() => navigate("/articles")}
         />
       </header>
 
       <main className="flex-grow w-full max-w-[704px] mx-auto px-6 pb-20">
-        {/* Category - Adjusted font size for mobile */}
+
+        {/* Category */}
         <p className="uppercase tracking-[0.2em] text-[10px] md:text-xs font-sans font-semibold mb-6 md:mb-8 opacity-70 text-[#6F7140]">
-          {category}
+          {article.category}
         </p>
 
-        {/* Title - Changed from fixed width to dynamic, fluid text size */}
+        {/* Title */}
         <h1 className="text-[32px] md:text-[60px] leading-[1.2] md:leading-[1.1] font-medium mb-8 md:mb-12 tracking-tight">
-          {title}
+          {article.title}
         </h1>
 
-        <hr className="border-[#1A2F1C]/20 mb-6" />
-        
-        {/* Meta Info Bar - Wrapped for small screens */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs md:text-sm font-sans mb-6">
-          <div className="flex flex-wrap items-center gap-2 md:gap-3 font-worksans">
-            <span className="border-b border-transparent cursor-pointer transition-colors text-[#043506]">
-              {author}
-            </span>
-            <span className="opacity-30">•</span>
-            <span className="opacity-60">{date}</span>
-            <span className="opacity-30 hidden xs:inline">•</span>
-            <span className="opacity-60">{readTime}</span>
+        {/* Featured Image - agar hai toh dikhao */}
+        {article.image && !article.image.includes("landing1") && (
+          <div className="mb-10 w-full">
+            <img
+              src={article.image}
+              alt={article.title}
+              className="w-full object-cover rounded-sm"
+              style={{ maxHeight: "480px" }}
+            />
           </div>
-          
+        )}
+
+        <hr className="border-[#1A2F1C]/20 mb-6" />
+
+        {/* Meta Info Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs md:text-sm font-sans mb-6">
+          <div className="flex flex-wrap items-center gap-2 md:gap-3">
+            <span className="text-[#043506] font-medium">{article.author}</span>
+            <span className="opacity-30">•</span>
+            <span className="opacity-60">{article.date}</span>
+            <span className="opacity-30">•</span>
+            <span className="opacity-60">{article.readTime}</span>
+          </div>
+
           <div className="flex gap-5 self-end sm:self-auto">
-            <button 
+            <button
               onClick={() => setIsBookmarked(!isBookmarked)}
               className="hover:scale-110 transition-transform active:scale-95"
               aria-label="Bookmark article"
             >
               <BookmarkIcon filled={isBookmarked} />
             </button>
-            
-            <button 
+            <button
               onClick={handleShare}
               className="hover:scale-110 transition-transform active:scale-95"
               aria-label="Share article"
@@ -96,22 +108,26 @@ const SapereArticle: React.FC<ArticleProps> = ({
         </div>
 
         <hr className="border-[#1A2F1C]/20 mb-8" />
-        
-        {/* Excerpt - Removed fixed width for fluid container */}
-        <p className="text-[16px] md:text-[18px] leading-[1.61] opacity-90 font-normal text-justify">
-          {excerpt}
-        </p>
+
+        {/* Full Article Content from WordPress */}
+        <div
+          className="text-[16px] md:text-[18px] leading-[1.75] opacity-90 font-normal
+            [&>h2]:text-[24px] [&>h2]:md:text-[32px] [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-4
+            [&>h3]:text-[20px] [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-3
+            [&>p]:mb-6 [&>p]:text-justify
+            [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-6
+            [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6
+            [&>blockquote]:border-l-4 [&>blockquote]:border-[#2a3d2a] [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:opacity-80 [&>blockquote]:my-6
+            [&>img]:w-full [&>img]:rounded-sm [&>img]:my-6"
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
       </main>
 
-      {/* Footer - Existing responsive logic maintained and polished */}
-      <footer className=" bg-[#332C0F] text-[#F2EDE4]/60 py-8 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-sans tracking-widest uppercase">
+      {/* Footer */}
+      <footer className="bg-[#332C0F] text-[#F2EDE4]/60 py-8 px-6 md:px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-sans tracking-widest uppercase">
         <div className="flex items-center gap-4 mb-6 md:mb-0">
-          <img
-            src={logo1}
-            alt="Sapere Icon"
-            className="w-[36px] md:w-[44px] h-auto object-contain"
-          />
-          <span className="text-center md:text-left">© 2026 Sapēre. All rights reserved.</span>
+          <img src={logo1} alt="Sapere Icon" className="w-[36px] md:w-[44px] h-auto object-contain" />
+          <span>© 2026 Sapēre. All rights reserved.</span>
         </div>
         <div className="flex gap-6">
           <a href="https://www.instagram.com/saperepublication/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Instagram</a>
@@ -121,7 +137,7 @@ const SapereArticle: React.FC<ArticleProps> = ({
       </footer>
     </div>
   );
-};
+}
 
 const BookmarkIcon = ({ filled }: { filled: boolean }) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.5">
@@ -138,5 +154,3 @@ const ShareIcon = () => (
     <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
   </svg>
 );
-
-export default SapereArticle;
