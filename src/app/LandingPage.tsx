@@ -63,29 +63,25 @@ export default function LandingPage() {
                   Luxury is often talked about, but rarely understood.
                 </p>
                 <p>
-                  Sapēre was created to bring clarity to an industry that moves
-                  fast, evolves constantly, and isn't always easy to navigate
-                  from the inside.
+                 Sapēre was built for those creating in this industry, where access, structure, and relationships define what is possible. 
                 </p>
                 <p>
-                  It's a space for professionals across the luxury world, from
-                  fashion to hospitality, strategy to culture, who want
-                  perspectives that go beyond trends. Not just to stay informed,
-                  but to make better decisions in their careers and within the
-                  industry.
+                  It brings together the elements required to build: insights, guidance, and real access, not as separate pieces, but as one system. 
                 </p>
                 <p>
-                  Because understanding what's happening, and why, is what
-                  creates a real competitive advantage.
+                 Because building in luxury is different. <br />
+                 And those who understand that, build differently.<br />
+                 To the future leaders of luxury!
+
                 </p>
-                <p>
+                {/* <p>
                   Sapēre brings together voices from across the industry to
                   share insights, context, and direction.
                 </p>
                 <p className="mb-0">
                   For those building what comes next, to the future leaders of
                   luxury, shaped here.
-                </p>
+                </p> */}
               </div>
 
               {/* Signature Image */}
