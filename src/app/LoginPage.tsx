@@ -104,7 +104,7 @@ export default function App() {
                 border: "none",
               }}
             >
-              {loading ? "Saving..." : "join to waitlist"}
+              {loading ? "Saving..." : "JOIN THE WAITLIST"}
             </button>
           </div>
 

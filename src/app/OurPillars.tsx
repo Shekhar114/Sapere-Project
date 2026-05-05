@@ -1,249 +1,101 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import ornamentImg from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
+import Comingsoon from "./Comingsoon";
 
 const pillars = [
-  { id: 1, label: "HOSPITALITY,\nREAL ESTATE &\nPLACES", bg: "#6F7140", hasPattern: true, patternSide: "left", size: "large" },
-  { id: 2, label: "FASHION &\nCREATIVE\nDIRECTION", bg: "#999678", hasPattern: false, patternSide: "none", size: "large" },
-  { id: 3, label: "TECHNOLOGY,\nINNOVATION &\nSUSTAINABILITY", bg: "#656643", hasPattern: true, patternSide: "left", size: "large" },
-  { id: 4, label: "INDUSTRY NEWS\n& THE BUSINESS\nOF LUXURY", bg: "#6F7140", hasPattern: true, patternSide: "right", size: "large" },
-  { id: 5, label: "BEAUTY\nINDUSTRY", bg: "#999678", hasPattern: false, patternSide: "none", size: "small" },
-  { id: 6, label: "JEWELRY &\nWATCHES", bg: "#656643", hasPattern: true, patternSide: "left", size: "small" },
-  { id: 7, label: "PEOPLE &\nPOWER", bg: "#6F7140", hasPattern: true, patternSide: "right", size: "small" },
-  { id: 8, label: "ART, MUSIC &\nFILM", bg: "#999678", hasPattern: false, patternSide: "none", size: "small" },
-  { id: 9, label: "EVENT\nREPORTING", bg: "#656643", hasPattern: true, patternSide: "left", size: "small" },
+  { id: 1, label: "EDITORIAL", desc: "Where luxury is broken down beyond the surface. Clarity on how the industry actually works.", bg: "#6F7140", hasPattern: true, patternSide: "right" },
+  { id: 2, label: "SIGNATURE\nEXPERIENCES", desc: "Designed to connect you with the right people. Not everything happens online.", bg: "#999678", hasPattern: false, patternSide: "none" },
+  { id: 3, label: "COLLABORATIONS", desc: "Strategic partnerships that open the right doors. Chosen carefully.", bg: "#656643", hasPattern: true, patternSide: "right" },
+  { id: 4, label: "INCUBATOR", desc: "Supporting those building something worth watching.", bg: "#6F7140", hasPattern: true, patternSide: "left" },
+  { id: 5, label: "MENTORSHIPS", desc: "Direct access to those who have built before you. Guidance where it actually matters.", bg: "#999678", hasPattern: false, patternSide: "none" },
+  { id: 6, label: "PODCASTS", desc: "Conversations beyond the surface. What's usually not said, is explored here.", bg: "#656643", hasPattern: true, patternSide: "left" },
 ];
 
-interface PillarCardProps {
-  label: string;
-  hasPattern: boolean;
-  patternSide: string;
-  size: string;
-  bg: string;
-  onClick: () => void;
-  isMobile: boolean;
-}
-
-const PillarCard = ({ label, hasPattern, patternSide, size, bg, onClick, isMobile }: PillarCardProps) => {
-  const [hovered, setHovered] = useState(false);
-  const lines = label.split("\n");
-
-  // Only apply hover effects if it is NOT mobile
-  const activeHover = hovered && !isMobile;
+const PillarCard = ({ label, desc, hasPattern, patternSide, bg }) => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => setIsHovered(false)}
       style={{
-        position: "relative",
-        backgroundColor: activeHover ? bg + "CC" : bg,
-        overflow: "hidden",
-        cursor: "pointer",
-        transition: "all 0.3s ease",
-        transform: activeHover ? "translateY(-4px)" : "translateY(0)",
-        boxShadow: activeHover
-          ? "0 12px 32px rgba(0,0,0,0.35)"
-          : "0 2px 8px rgba(0,0,0,0.2)",
-        borderRadius: "2px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: isMobile ? "152px" : (size === "large" ? "232px" : "179px"),
-        height: isMobile ? "152px" : (size === "large" ? "232px" : "179px"),
+        position: "relative", backgroundColor: bg, width: "284px", height: "221px",
+        overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "all 0.4s ease", cursor: "default", borderRadius: "2px"
       }}
     >
       {hasPattern && (
-        <img
-          src={ornamentImg}
-          alt=""
+        <img src={ornamentImg} alt=""
           style={{
-            position: "absolute",
-            top: "50%",
-            left: patternSide === "left" ? "-50%" : "auto",
-            right: patternSide === "right" ? "-50%" : "auto",
-            transform: "translateY(-50%)",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: patternSide === "left" ? "right center" : "left center",
-            opacity: 0.25,
-            pointerEvents: "none",
-            userSelect: "none",
+            position: "absolute", top: "50%",
+            left: patternSide === "left" ? "-48%" : "auto",
+            right: patternSide === "right" ? "-48%" : "auto",
+            transform: "translateY(-45%)", height: "115%", opacity: 0.22,
+            pointerEvents: "none", zIndex: 1, objectFit: "contain"
           }}
         />
       )}
-
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          textAlign: "center",
-          padding: "12px",
-        }}
-      >
-        {lines.map((line, i) => (
-          <div
-            key={i}
-            style={{
-              fontFamily: "'Crimson Pro', serif",
-              fontWeight: 600,
-              // Fixed CSS Clamp: min must be smaller than max
-              fontSize: isMobile ? "13px" : "clamp(13px, 1.1vw, 20px)",
-              letterSpacing: "0.12em",
-              color: "#f0ead6",
-              lineHeight: 1.38,
-              textTransform: "uppercase",
-            }}
-          >
-            {line}
-          </div>
-        ))}
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
+        <div style={{
+          fontFamily: "'Crimson Pro', serif", fontWeight: 600, fontSize: "18px",
+          letterSpacing: "0.15em", color: "#f0ead6", textTransform: "uppercase",
+          opacity: isHovered ? 0 : 1, transform: isHovered ? "translateY(-10px)" : "translateY(0)",
+          transition: "all 0.3s ease", padding: "0 20px",
+        }}>
+          {label.split("\n").map((line, i) => <div key={i}>{line}</div>)}
+        </div>
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          transform: isHovered ? "translate(-50%, -50%)" : "translate(-50%, -30%)",
+          width: "255px", color: "#f0ead6", fontSize: "13.5px", lineHeight: "1.6",
+          fontFamily: "'Work Sans', sans-serif", textAlign: "center",
+          opacity: isHovered ? 1 : 0, transition: "all 0.3s ease",
+          pointerEvents: "none", whiteSpace: "normal",
+        }}>
+          {desc}
+        </div>
       </div>
     </div>
   );
 };
 
 export default function OurPillars() {
-  const navigate = useNavigate();
-  
-  // Instantly initialize state to avoid layout flashes on mobile load
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth <= 768;
-    }
-    return false;
-  });
+  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const topRow = pillars.slice(0, 4);
-  const bottomRow = pillars.slice(4);
+  // Button click hone par Comingsoon dikhao — woh khud SapereArticlesPage pe jayega
+  if (showComingSoon) return <Comingsoon />;
 
   return (
-    <section
-      style={{
-        backgroundColor: "#332C0F",
-        minHeight: "100vh",
-        padding: isMobile ? "60px 24px" : "80px 64px",
-        display: "flex",
-        justifyContent: "center",
-        boxSizing: "border-box",
-        overflowX: "hidden"
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: "1050px" }}>
-        
-        <div
-          style={{
-            display: "flex",
-            flexDirection: isMobile ? "column" : "row",
-            alignItems: "center",
-            justifyContent: isMobile ? "center" : "flex-start",
-            gap: isMobile ? "16px" : "48px",
-            marginBottom: isMobile ? "40px" : "56px",
-            width: "100%",
-          }}
-        >
-          <h1
-            style={{
-              margin: 0,
-              fontWeight: 600,
-              // Fixed CSS Clamp
-              fontSize: isMobile ? "44px" : "clamp(72px, 5vw, 90px)",
-              color: "#f0ead6",
-              lineHeight: 1.1,
-              fontFamily: "'Crimson Pro', serif",
-              textAlign: isMobile ? "center" : "left",
-            }}
-          >
-            Our Pillars
-          </h1>
-
-          <p className="font-work"
-            style={{
-              flex: isMobile ? "none" : 1,
-              // Changed from strict "320px" to prevent overflow on very narrow screens
-              width: isMobile ? "min(320px, 100%)" : "100%", 
-              maxWidth: isMobile ? "320px" : "600px",
-              fontSize: isMobile ? "14px" : "16px",
-              color: "#e8e4d8",
-              lineHeight: 1.5,
-              textAlign: isMobile ? "center" : "left", 
-              paddingTop: isMobile ? "0px" : "12px",
-              margin: 0,
-              fontWeight: 400,
-            }}
-          >
-            {isMobile ? (
-              "Sapēre is built on nine core pillars, each explaining the intrinsic foundation of the luxury industry"
-            ) : (
-              <>
-                Sapēre is built on nine core pillars, each explaining the intrinsic
-                foundation <br />of the luxury industry
-              </>
-            )}
-          </p>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: isMobile ? "center" : "flex-start",
-            gap: isMobile ? "16px" : "40px", 
-            width: "100%"
-          }}
-        >
-          {/* Top Row Grid */}
-          <div
-            style={{
-              display: "grid",
-              // Adjusted to exact widths for desktop to ensure proper spacing
-              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(4, 232px)",
-              justifyContent: isMobile ? "center" : "space-between",
-              gap: "16px",
-              width: "100%",
-            }}
-          >
-            {topRow.map((pillar) => (
-              <PillarCard 
-                key={pillar.id} 
-                {...pillar} 
-                isMobile={isMobile} 
-                onClick={() => navigate("/articles")} 
-              />
-            ))}
-          </div>
-
-          {/* Bottom Row Grid */}
-          <div
-            style={{
-              display: "grid",
-              // Adjusted to exact widths for desktop
-              gridTemplateColumns: isMobile ? "repeat(2, 152px)" : "repeat(5, 179px)",
-              justifyContent: isMobile ? "center" : "space-between",
-              gap: "16px",
-              width: "100%",
-              marginTop: isMobile ? "0px" : "24px",
-            }}
-          >
-            {bottomRow.map((pillar) => (
-              <PillarCard 
-                key={pillar.id} 
-                {...pillar} 
-                isMobile={isMobile} 
-                onClick={() => navigate("/articles")} 
-              />
-            ))}
-          </div>
-        </div>
+    <section style={{ backgroundColor: "#332C0F", minHeight: "100vh", padding: isMobile ? "60px 20px" : "80px 40px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: "100%", maxWidth: "900px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "center" : "flex-end", gap: isMobile ? "15px" : "30px", marginBottom: "60px", textAlign: isMobile ? "center" : "left" }}>
+        <h1 style={{ margin: 0, fontSize: isMobile ? "48px" : "72px", color: "#f0ead6", fontFamily: "'Crimson Pro', serif", lineHeight: 0.9 }}>
+          Our Pillars
+        </h1>
+        <p style={{ color: "#e8e4d8", fontSize: "16px", maxWidth: "500px", lineHeight: "1.25", fontFamily: "'Work Sans', sans-serif", margin: 0, paddingBottom: isMobile ? "0px" : "4px" }}>
+          Sapēre is built on nine core pillars, each explaining the intrinsic foundation of the luxury industry
+        </p>
       </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "284px" : "repeat(3, 284px)", gap: "24px", justifyContent: "center", width: "100%" }}>
+        {pillars.map((pillar) => <PillarCard key={pillar.id} {...pillar} />)}
+      </div>
+
+      <button
+        onClick={() => setShowComingSoon(true)}
+        style={{ marginTop: "60px", padding: "12px 32px", backgroundColor: "#f0ead6", color: "#332C0F", border: "none", fontFamily: "'Crimson Pro', serif", fontWeight: "bold", fontSize: "16px", cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.1em" }}
+      >
+        Read Articles
+      </button>
     </section>
   );
 }
