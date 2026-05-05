@@ -2,8 +2,8 @@ import { useState } from "react";
 import imgLogo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 import { Page2 } from "./welcomePage";
 
-// const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrqLEjvsHVRYpV1dRoBDBZoDU12NvmpEa5c7LoHskLqaQt0xCKbKljIa3M4pA9fMI62Q/exec";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxS9FxgrWwssXTt3kLzZphi91gnaH92a1iPopJudu3eCX5HfwhgpZRfsVHk4NrsY1Ml/exec";
+
 export default function App() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -13,19 +13,14 @@ export default function App() {
 
   const handleSubmit = async () => {
     if (!email.trim()) return;
-
     setLoading(true);
     setError("");
-
     try {
       await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          timestamp: new Date().toISOString(),
-        }),
+        body: JSON.stringify({ email: email.trim(), timestamp: new Date().toISOString() }),
       });
       setSubmitted(true);
     } catch (err) {
@@ -35,12 +30,9 @@ export default function App() {
     }
   };
 
-  if (submitted || skipped) {
-    return <Page2 />;
-  }
+  if (submitted || skipped) return <Page2 />;
 
   return (
-    
     <div
       className="min-h-screen w-full flex items-center justify-center px-6"
       style={{ backgroundColor: "#332c0f" }}
@@ -49,11 +41,7 @@ export default function App() {
         {/* Logo + Tagline */}
         <div className="flex flex-col items-center w-full">
           <div className="w-[280px] h-[260px] md:w-[302px] md:h-[281px] shrink-0">
-            <img
-              src={imgLogo}
-              alt="Sapere Logo"
-              className="w-full h-full object-contain"
-            />
+            <img src={imgLogo} alt="Sapere Logo" className="w-full h-full object-contain" />
           </div>
           <p
             className="text-white text-center mt-2"
@@ -74,6 +62,7 @@ export default function App() {
             className="flex items-center justify-between pb-2 w-full"
             style={{ borderBottom: "1px solid rgba(255,255,255,0.5)" }}
           >
+            {/* minWidth:0 — input ko shrink hone deta hai taaki button ke liye jagah bane */}
             <input
               type="email"
               value={email}
@@ -86,6 +75,7 @@ export default function App() {
                 fontWeight: 400,
                 fontSize: "16px",
                 lineHeight: "75px",
+                minWidth: 0,
               }}
             />
             <button
@@ -97,11 +87,13 @@ export default function App() {
                 color: "#f5f3eb",
                 fontFamily: "'Work Sans', sans-serif",
                 fontWeight: 400,
-                fontSize: "14px",
+                /* Mobile pe font aur padding chota — clamp se automatically adjust hoga */
+                fontSize: "clamp(11px, 2.5vw, 14px)",
                 lineHeight: "20px",
-                padding: "10px 32px",
+                padding: "10px clamp(12px, 3vw, 32px)",
                 borderRadius: "59px",
                 border: "none",
+                whiteSpace: "nowrap",
               }}
             >
               {loading ? "Saving..." : "JOIN THE WAITLIST"}
@@ -134,13 +126,7 @@ export default function App() {
             >
               Skip
             </button>
-            <p
-              style={{
-                fontFamily: "'Work Sans', sans-serif",
-                fontWeight: 500,
-                fontSize: "15px",
-              }}
-            >
+            <p style={{ fontFamily: "'Work Sans', sans-serif", fontWeight: 500, fontSize: "15px" }}>
               By subscribing, you agree to receive the Sapere newsletter. Unsubscribe anytime
             </p>
           </div>
