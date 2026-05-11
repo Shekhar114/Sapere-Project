@@ -1,8 +1,9 @@
 import { useState } from "react";
 import imgLogo from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
-import { Page2 } from "./welcomePage";
+import LandingPage from "./LandingPage";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxS9FxgrWwssXTt3kLzZphi91gnaH92a1iPopJudu3eCX5HfwhgpZRfsVHk4NrsY1Ml/exec";
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxS9FxgrWwssXTt3kLzZphi91gnaH92a1iPopJudu3eCX5HfwhgpZRfsVHk4NrsY1Ml/exec";
 
 export default function App() {
   const [email, setEmail] = useState("");
@@ -23,14 +24,17 @@ export default function App() {
         body: JSON.stringify({ email: email.trim(), timestamp: new Date().toISOString() }),
       });
       setSubmitted(true);
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  if (submitted || skipped) return <Page2 />;
+  // submitted → LandingPage with isLoggedIn=true  → OurPillars
+  // skipped   → LandingPage with isLoggedIn=false → Comingsoon (pillarsCard)
+  if (submitted) return <LandingPage isLoggedIn={true} />;
+  if (skipped)   return <LandingPage isLoggedIn={false} />;
 
   return (
     <div
@@ -62,7 +66,6 @@ export default function App() {
             className="flex items-center justify-between pb-2 w-full"
             style={{ borderBottom: "1px solid rgba(255,255,255,0.5)" }}
           >
-            {/* minWidth:0 — input ko shrink hone deta hai taaki button ke liye jagah bane */}
             <input
               type="email"
               value={email}
@@ -87,7 +90,6 @@ export default function App() {
                 color: "#f5f3eb",
                 fontFamily: "'Work Sans', sans-serif",
                 fontWeight: 400,
-                /* Mobile pe font aur padding chota — clamp se automatically adjust hoga */
                 fontSize: "clamp(11px, 2.5vw, 14px)",
                 lineHeight: "20px",
                 padding: "10px clamp(12px, 3vw, 32px)",

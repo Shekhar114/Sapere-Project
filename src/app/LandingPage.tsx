@@ -1,9 +1,20 @@
+// LandingPage.tsx
 import { useNavigate } from "react-router-dom";
 import landingImg from "../assets/landing.png";
 import signatureImg from "../assets/signature.png";
 
-export default function LandingPage() {
+interface LandingPageProps {
+  isLoggedIn: boolean;
+}
+
+export default function LandingPage({ isLoggedIn }: LandingPageProps) {
   const navigate = useNavigate();
+
+  const handleExplore = () => {
+    // isLoggedIn=true  → /pillarsCard  (OurPillars)
+    // isLoggedIn=false → /comingsoon   (Comingsoon)
+    navigate(isLoggedIn ? "/pillars" : "/pillarsCard");
+  };
 
   return (
     <main
@@ -11,31 +22,24 @@ export default function LandingPage() {
       style={{ backgroundColor: "#e8e4d8" }}
     >
       <section className="w-full max-w-6xl px-2 md:px-0 flex flex-col justify-center">
-        {/* Changed items-center to md:items-start to pin the image and text to the top */}
         <div className="flex flex-col md:flex-row md:items-start gap-10 lg:gap-20">
-          
-          {/* Left Side: Main Image */}
+
+          {/* Left: Image */}
           <div className="w-full md:w-[45%] flex-shrink-0">
             <div
               className="relative w-full overflow-hidden flex items-start justify-center"
-              style={{ 
-                borderRadius: "24px", 
-                height: "clamp(350px, 65vh, 650px)" 
-              }}
+              style={{ borderRadius: "24px", height: "clamp(350px, 65vh, 650px)" }}
             >
               <img
                 src={landingImg}
                 alt="Sapēre storefront"
                 className="w-full h-full object-cover md:object-contain transition-transform duration-700 hover:scale-105"
-                style={{
-                  display: "block",
-                  objectPosition: "top" // Ensures the image content starts from the top
-                }}
+                style={{ display: "block", objectPosition: "top" }}
               />
             </div>
           </div>
 
-          {/* Right Side: Text Content */}
+          {/* Right: Text */}
           <div className="w-full md:w-1/2 flex flex-col justify-start">
             <h1
               className="mb-6 md:mb-8 leading-tight"
@@ -44,7 +48,7 @@ export default function LandingPage() {
                 fontSize: "clamp(2.2rem, 3.5vw, 3.2rem)",
                 color: "#1a1a0f",
                 lineHeight: "1.1",
-                marginTop: "0.2em" // Minor offset to perfectly align with the top of the image
+                marginTop: "0.2em",
               }}
             >
               Luxury finally understood.
@@ -52,41 +56,30 @@ export default function LandingPage() {
 
             <div
               className="space-y-4 md:space-y-5 text-sm md:text-[15px] leading-relaxed"
-              style={{
-                color: "#2c2c1a",
-                letterSpacing: "0.01em",
-                lineHeight: "1.6",
-              }}
+              style={{ color: "#2c2c1a", letterSpacing: "0.01em", lineHeight: "1.6" }}
             >
-              <div className="font-semibold space-y-4" style={{ fontSize: "clamp(0.9rem, 1.1vw, 1.05rem)", textAlign: "justify" }}>
+              <div
+                className="font-semibold space-y-4"
+                style={{ fontSize: "clamp(0.9rem, 1.1vw, 1.05rem)", textAlign: "justify" }}
+              >
+                <p>Luxury is often talked about, but rarely understood.</p>
                 <p>
-                  Luxury is often talked about, but rarely understood.
+                  Sapēre was built for those creating in this industry, where access, structure,
+                  and relationships define what is possible.
                 </p>
                 <p>
-                 Sapēre was built for those creating in this industry, where access, structure, and relationships define what is possible. 
+                  It brings together the elements required to build: insights, guidance, and real
+                  access, not as separate pieces, but as one system.
                 </p>
                 <p>
-                  It brings together the elements required to build: insights, guidance, and real access, not as separate pieces, but as one system. 
+                  Because building in luxury is different. <br />
+                  And those who understand that, build differently. <br />
+                  To the future leaders of luxury!
                 </p>
-                <p>
-                 Because building in luxury is different. <br />
-                 And those who understand that, build differently.<br />
-                 To the future leaders of luxury!
-
-                </p>
-                {/* <p>
-                  Sapēre brings together voices from across the industry to
-                  share insights, context, and direction.
-                </p>
-                <p className="mb-0">
-                  For those building what comes next, to the future leaders of
-                  luxury, shaped here.
-                </p> */}
               </div>
 
-              {/* Signature Image */}
               <div className="flex justify-start md:justify-end pt-4">
-                <img 
+                <img
                   src={signatureImg}
                   alt="Signature"
                   className="h-[50px] md:h-[65px] w-auto object-contain opacity-90"
@@ -96,15 +89,15 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA */}
         <div className="flex justify-center mt-12 md:mt-0.5">
           <button
             type="button"
-            onClick={() => navigate("/pillars")}
+            onClick={handleExplore}
             className="px-12 py-4 text-[13px] font-semibold tracking-[0.2em] transition-all duration-300 font-work uppercase hover:shadow-lg"
             style={{
               backgroundColor: "#043506",
-              color: "#f0edda",           
+              color: "#f0edda",
               border: "none",
               cursor: "pointer",
               borderRadius: "2px",
