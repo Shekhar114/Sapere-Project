@@ -155,7 +155,7 @@ export default function OurPillars() {
             flexShrink: 0,
           }}
         >
-          Read Articles
+          Secure Your Place
         </button>
       </div>
 
@@ -225,7 +225,7 @@ export default function OurPillars() {
               transition: "opacity 0.2s",
             }}
           >
-            {loading ? "Saving..." : "Join Us"}
+            {loading ? "Saving..." : "JOIN THE WAITLIST"}
           </button>
         </div>
 

@@ -129,7 +129,7 @@ export default function OurPillars() {
             flexShrink: 0,
           }}
         >
-          Read Articles
+          Secure Your Place
         </button>
       </div>
 
