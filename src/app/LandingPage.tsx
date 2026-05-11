@@ -1,7 +1,7 @@
 // LandingPage.tsx
 import { useNavigate } from "react-router-dom";
 import landingImg from "../assets/landing.png";
-import signatureImg from "../assets/signature.png";
+import signatureImg from "../assets/sign.png";
 
 interface LandingPageProps {
   isLoggedIn: boolean;
