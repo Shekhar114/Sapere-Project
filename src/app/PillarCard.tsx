@@ -2,11 +2,24 @@
 import { useState, useEffect } from "react";
 import ornamentImg from "../assets/b3a4a46ae6ce743e601e5c2fda9dfb646639c587.png";
 import Comingsoon from "./Comingsoon";
+import SecureYourPlace from "./SecureYourPlace";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxS9FxgrWwssXTt3kLzZphi91gnaH92a1iPopJudu3eCX5HfwhgpZRfsVHk4NrsY1Ml/exec";
 
-const pillars = [
+interface PillarCardProps {
+  label: string;
+  desc: string;
+  hasPattern: boolean;
+  patternSide: "left" | "right" | "none";
+  bg: string;
+}
+
+interface PillarData extends PillarCardProps {
+  id: number;
+}
+
+const pillars: PillarData[] = [
   { id: 1, label: "EDITORIAL", desc: "Where luxury is broken down beyond the surface. Clarity on how the industry actually works.", bg: "#6F7140", hasPattern: true, patternSide: "right" },
   { id: 2, label: "SIGNATURE\nEXPERIENCES", desc: "Designed to connect you with the right people. Not everything happens online.", bg: "#999678", hasPattern: false, patternSide: "none" },
   { id: 3, label: "COLLABORATIONS", desc: "Strategic partnerships that open the right doors. Chosen carefully.", bg: "#656643", hasPattern: true, patternSide: "right" },
@@ -15,8 +28,10 @@ const pillars = [
   { id: 6, label: "PODCASTS", desc: "Conversations beyond the surface. What's usually not said, is explored here.", bg: "#656643", hasPattern: true, patternSide: "left" },
 ];
 
-const PillarCard = ({ label, desc, hasPattern, patternSide, bg }) => {
+const PillarCard = ({ label, desc, hasPattern, patternSide, bg, isDesktop, isActive, onSelect }: PillarCardProps & { isDesktop: boolean; isActive: boolean; onSelect: () => void; }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const showTitle = isHovered && !isActive && isDesktop;
+  const showDesc = isActive && (isDesktop ? isHovered : true);
 
   return (
     <div
@@ -24,10 +39,11 @@ const PillarCard = ({ label, desc, hasPattern, patternSide, bg }) => {
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={() => setIsHovered(true)}
       onTouchEnd={() => setIsHovered(false)}
+      onClick={onSelect}
       style={{
         position: "relative", backgroundColor: bg, width: "284px", height: "221px",
         overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center",
-        transition: "all 0.4s ease", cursor: "default", borderRadius: "2px",
+        transition: "all 0.4s ease", cursor: "pointer", borderRadius: "2px",
       }}
     >
       {hasPattern && (
@@ -47,17 +63,19 @@ const PillarCard = ({ label, desc, hasPattern, patternSide, bg }) => {
         <div style={{
           fontFamily: "'Crimson Pro', serif", fontWeight: 600, fontSize: "18px",
           letterSpacing: "0.15em", color: "#f0ead6", textTransform: "uppercase",
-          opacity: isHovered ? 0 : 1, transform: isHovered ? "translateY(-10px)" : "translateY(0)",
+          opacity: showTitle ? 1 : 0, transform: showTitle ? "translateY(0)" : "translateY(-10px)",
           transition: "all 0.3s ease", padding: "0 20px",
+          pointerEvents: "none",
+          whiteSpace: "break-spaces",
         }}>
-          {label.split("\n").map((line, i) => <div key={i}>{line}</div>)}
+          {label.split("\n").map((line: string, i: number) => <div key={i}>{line}</div>)}
         </div>
         <div style={{
           position: "absolute", top: "50%", left: "50%",
-          transform: isHovered ? "translate(-50%, -50%)" : "translate(-50%, -30%)",
+          transform: showDesc ? "translate(-50%, -50%)" : "translate(-50%, -30%)",
           width: "255px", color: "#f0ead6", fontSize: "13.5px", lineHeight: "1.6",
           fontFamily: "'Work Sans', sans-serif", textAlign: "center",
-          opacity: isHovered ? 1 : 0, transition: "all 0.3s ease",
+          opacity: showDesc ? 1 : 0, transition: "all 0.3s ease",
           pointerEvents: "none", whiteSpace: "normal",
         }}>
           {desc}
@@ -69,6 +87,8 @@ const PillarCard = ({ label, desc, hasPattern, patternSide, bg }) => {
 
 export default function OurPillars() {
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showSecureFlow, setShowSecureFlow] = useState(false);
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -81,8 +101,16 @@ export default function OurPillars() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const handleOpenSecureFlow = () => {
+    setError("");
+    setShowSecureFlow(true);
+  };
+
   const handleJoinUs = async () => {
-    if (!email.trim()) return;
+    if (!email.trim()) {
+      setError("Please enter your email to continue.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -92,13 +120,27 @@ export default function OurPillars() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), timestamp: new Date().toISOString() }),
       });
-      setShowComingSoon(true); // ✅ email save hone ke baad Comingsoon dikhao
+      setShowSecureFlow(false);
+      setShowComingSoon(true);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  if (showSecureFlow) {
+    return (
+      <SecureYourPlace
+        email={email}
+        onEmailChange={setEmail}
+        onSubmit={handleJoinUs}
+        onCancel={() => setShowSecureFlow(false)}
+        loading={loading}
+        error={error}
+      />
+    );
+  }
 
   if (showComingSoon) return <Comingsoon />;
 
@@ -139,7 +181,7 @@ export default function OurPillars() {
         </h1>
 
         <button
-          onClick={() => setShowComingSoon(true)}
+          onClick={handleOpenSecureFlow}
           style={{
             padding: "12px 32px",
             backgroundColor: "#f0ead6",
@@ -170,79 +212,18 @@ export default function OurPillars() {
         }}
       >
         {pillars.map((pillar) => (
-          <PillarCard key={pillar.id} {...pillar} />
+          <PillarCard
+            key={pillar.id}
+            {...pillar}
+            isDesktop={!isMobile}
+            isActive={pillar.id === activeCardId}
+            onSelect={() => setActiveCardId(pillar.id === activeCardId ? null : pillar.id)}
+          />
         ))}
       </div>
 
       {/* Email Subscribe Row */}
-      <div style={{ marginTop: "52px", width: "100%", maxWidth: isMobile ? "100%" : "440px" }}>
-        <div
-          style={{
-            borderBottom: "1.5px solid #a09878",
-            display: "flex",
-            alignItems: "center",
-            paddingBottom: "10px",
-            gap: "12px",
-          }}
-        >
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleJoinUs()}
-            style={{
-              flex: 1,
-              background: "transparent",
-              border: "none",
-              outline: "none",
-              color: "#f0ead6",
-              fontSize: "15px",
-              fontFamily: "'Work Sans', sans-serif",
-              letterSpacing: "0.03em",
-              padding: 0,
-            }}
-          />
-
-          <button
-            onClick={handleJoinUs}
-            disabled={loading}
-            style={{
-              padding: "9px 22px",
-              backgroundColor: "#8B6914",
-              color: "#f0ead6",
-              border: "none",
-              borderRadius: "999px",
-              fontFamily: "'Work Sans', sans-serif",
-              fontWeight: 600,
-              fontSize: "13px",
-              cursor: loading ? "not-allowed" : "pointer",
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-              opacity: loading ? 0.6 : 1,
-              transition: "opacity 0.2s",
-            }}
-          >
-            {loading ? "Saving..." : "JOIN THE WAITLIST"}
-          </button>
-        </div>
-
-        {/* Error message */}
-        {error && (
-          <p
-            style={{
-              marginTop: "8px",
-              color: "#ff6b6b",
-              fontFamily: "'Work Sans', sans-serif",
-              fontSize: "13px",
-            }}
-          >
-            {error}
-          </p>
-        )}
-      </div>
+      
     </section>
   );
 }
